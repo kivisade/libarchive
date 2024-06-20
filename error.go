@@ -27,13 +27,13 @@ func codeToError(archive *C.struct_archive, e int) error {
 	case ARCHIVE_EOF:
 		return ErrArchiveEOF
 	case ARCHIVE_FATAL:
-		return errors.New(fmt.Sprintf("libarchive: FATAL [%s]", errorString(archive)))
+		return fmt.Errorf("libarchive: FATAL [%s]", errorString(archive))
 	case ARCHIVE_FAILED:
-		return errors.New(fmt.Sprintf("libarchive: FAILED [%s]", errorString(archive)))
+		return fmt.Errorf("libarchive: FAILED [%s]", errorString(archive))
 	case ARCHIVE_RETRY:
-		return errors.New(fmt.Sprintf("libarchive: RETRY [%s]", errorString(archive)))
+		return fmt.Errorf("libarchive: RETRY [%s]", errorString(archive))
 	case ARCHIVE_WARN:
-		return errors.New(fmt.Sprintf("libarchive: WARN [%s]", errorString(archive)))
+		return fmt.Errorf("libarchive: WARN [%s]", errorString(archive))
 	}
 	return nil
 }

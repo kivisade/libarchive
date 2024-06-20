@@ -23,15 +23,15 @@ type Reader struct {
 
 // NewReader returns new Archive by calling archive_read_open
 func NewReader(reader io.Reader) (r *Reader, err error) {
-	r = new(Reader)
-	r.buffer = make([]byte, 1024)
-	r.archive = C.archive_read_new()
+	r = &Reader{
+		archive: C.archive_read_new(),
+		reader:  reader,
+		buffer:  make([]byte, 1024),
+	}
 	C.archive_read_support_filter_all(r.archive)
 	C.archive_read_support_format_all(r.archive)
 
-	r.reader = reader
-
-	e := C.go_libarchive_open(r.archive, unsafe.Pointer(r))
+	e := C.go_libarchive_open(r.archive, (*C.char)(unsafe.Pointer(r)))
 
 	err = codeToError(r.archive, int(e))
 	return
@@ -50,8 +50,8 @@ func myclose(archive *C.struct_archive, client_data unsafe.Pointer) C.int {
 }
 
 //export myread
-func myread(archive *C.struct_archive, client_data unsafe.Pointer, block unsafe.Pointer) C.size_t {
-	reader := (*Reader)(client_data)
+func myread(archive *C.struct_archive, client_data *C.char, block unsafe.Pointer) C.size_t {
+	reader := (*Reader)(unsafe.Pointer(client_data))
 	read, err := reader.reader.Read(reader.buffer)
 	if err != nil && err != ErrArchiveEOF {
 		// set error
