@@ -20,7 +20,6 @@ func printContents(filename string) {
 	if err != nil {
 		fmt.Printf("Error on NewReader\n %s\n", err)
 	}
-	defer reader.Free()
 	defer reader.Close()
 	for {
 		entry, err := reader.Next()

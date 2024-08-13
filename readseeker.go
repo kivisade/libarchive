@@ -111,7 +111,7 @@ func (r *ReedSeeker) Size() int {
 // calling archive_read_free
 func (r *ReedSeeker) Free() error {
 	if C.archive_read_free(r.archive) == ARCHIVE_FATAL {
-		return ErrArchiveFatal
+		return ErrArchiveFatalClosing
 	}
 	return nil
 }
@@ -120,7 +120,7 @@ func (r *ReedSeeker) Free() error {
 // calling archive read_cloe
 func (r *ReedSeeker) Close() error {
 	if C.archive_read_close(r.archive) == ARCHIVE_FATAL {
-		return ErrArchiveFatal
+		return ErrArchiveFatalClosing
 	}
 	return nil
 }

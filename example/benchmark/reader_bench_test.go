@@ -19,7 +19,6 @@ var buf = make([]byte, 4096) // probably fine
 
 func BenchTestFuncLib(b *testing.B, file io.Reader) {
 	reader, _ := ar.NewReader(file)
-	defer reader.Free()
 	defer reader.Close()
 	runBenchTest(b, wrapLibArchive(reader))
 }

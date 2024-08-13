@@ -23,34 +23,65 @@ func TestCompressedBz2(t *testing.T) {
 }
 
 func TestTwoReaders(t *testing.T) {
-	test_file, err := os.Open("./fixtures/test.tar")
+	testFile, err := os.Open("./fixtures/test.tar")
 	if err != nil {
 		t.Fatalf("Error while reading fixture file %s ", err)
 	}
 
-	_, err = NewReader(test_file)
+	_, err = NewReader(testFile)
 	if err != nil {
 		t.Fatalf("Error creating Archive from a io.Reader 1:\n %s ", err)
 	}
 
-	test_file2, err := os.Open("./fixtures/test2.tar")
+	testFile2, err := os.Open("./fixtures/test2.tar")
 	if err != nil {
 		t.Fatalf("Error while reading fixture file %s ", err)
 	}
 
-	_, err = NewReader(test_file2)
+	_, err = NewReader(testFile2)
 	if err != nil {
 		t.Fatalf("Error on creating Archive from a io.Reader 2:\n %s", err)
 	}
 }
 
+// func TestBadArchive(t *testing.T) {
+// 	testFile, err := os.Open("./fixtures/bad.tar")
+// 	if err != nil {
+// 		t.Fatalf("Error while reading fixture file %s ", err)
+// 	}
+
+// 	reader, err := NewReader(testFile)
+// 	if err != nil {
+// 		t.Fatalf("Error creating Archive from a io.Reader 1:\n %s ", err)
+// 	}
+
+// 	warn := false
+// 	for {
+// 		_, err := reader.Next()
+// 		if errors.Is(err, ErrArchiveEOF) {
+// 			break
+// 		}
+// 		if errors.Is(err, ErrArchiveWarn) {
+// 			warn = true
+// 			fmt.Println(err)
+// 			continue
+// 		}
+// 		if err != nil {
+// 			t.Fatalf("Error getting next header:\n %s ", err)
+// 		}
+// 	}
+// 	if !warn {
+// 		t.Fatalf("Expected a warning but got none")
+// 	}
+// }
+
 func assertCompressed(t *testing.T, file string) {
-	test_file, err := os.Open(file)
+	testFile, err := os.Open(file)
 	if err != nil {
 		t.Fatalf("Error while reading fixture file %s ", err)
 	}
 
-	reader, err := NewReader(test_file)
+	reader, err := NewReader(testFile)
 	if err != nil {
 		t.Fatalf("Error while creating NewReader %s ", err)
 	}
@@ -111,12 +142,12 @@ func assertCompressed(t *testing.T, file string) {
 }
 
 func assertArchive(t *testing.T, file string) {
-	test_file, err := os.Open(file)
+	testFile, err := os.Open(file)
 	if err != nil {
 		t.Fatalf("Error while reading fixture file %s ", err)
 	}
 
-	reader, err := NewReader(test_file)
+	reader, err := NewReader(testFile)
 	if err != nil {
 		t.Fatalf("Error on creating Archive from a io.Reader:\n %s", err)
 	}

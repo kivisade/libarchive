@@ -83,6 +83,10 @@ func (r *Reader) Next() (ArchiveEntry, error) {
 	return e, err
 }
 
+// func (r *Reader) Position() int64 {
+// 	return int64(C.archive_position(r.archive))
+// }
+
 // Must be called after Next
 func (r *Reader) IsRaw() bool {
 	format := C.archive_format(r.archive)
@@ -113,7 +117,7 @@ func (r *Reader) Size() int {
 // Note this calls
 func (r *Reader) ReadFree() error {
 	if C.archive_read_free(r.archive) == ARCHIVE_FATAL {
-		return ErrArchiveFatal
+		return ErrArchiveFatalClosing
 	}
 	return nil
 }
@@ -122,7 +126,7 @@ func (r *Reader) ReadFree() error {
 // calling archive read_cloe
 func (r *Reader) ReadClose() error {
 	if C.archive_read_close(r.archive) == ARCHIVE_FATAL {
-		return ErrArchiveFatal
+		return ErrArchiveFatalClosing
 	}
 	return nil
 }
