@@ -45,7 +45,7 @@ func (h *entryImpl) Stat() os.FileInfo {
 }
 
 func (h *entryImpl) PathName() string {
-	name := C.archive_entry_pathname(h.entry)
+	name := C.archive_entry_pathname_utf8(h.entry)
 
 	return C.GoString(name)
 }
