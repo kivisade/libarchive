@@ -12,6 +12,7 @@ import (
 	"os"
 	"path/filepath"
 	"syscall"
+	"time"
 )
 
 // ArchiveEntry represents an libarchive archive_entry
@@ -28,13 +29,15 @@ type entryImpl struct {
 }
 
 type entryInfo struct {
-	stat *C.struct_stat
-	name string
+	stat  *C.struct_stat
+	mtime time.Time
+	name  string
 }
 
 func (h *entryImpl) Stat() os.FileInfo {
 	info := &entryInfo{}
 	info.stat = C.archive_entry_stat(h.entry)
+	info.mtime = time.Unix(int64(C.archive_entry_mtime(h.entry)), int64(C.archive_entry_mtime_nsec(h.entry)))
 	info.name = filepath.Base(h.PathName())
 	return info
 }
