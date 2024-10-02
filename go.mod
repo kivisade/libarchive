@@ -1,3 +1,3 @@
-module github.com/jonathongardner/libarchive
+module github.com/kivisade/libarchive
 
 go 1.22.2

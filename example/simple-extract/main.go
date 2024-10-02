@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	ar "github.com/jonathongardner/libarchive"
+	ar "github.com/kivisade/libarchive"
 )
 
 func printContents(filename string) {

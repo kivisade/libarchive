@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	ar "github.com/jonathongardner/libarchive"
+	ar "github.com/kivisade/libarchive"
 )
 
 type ArchiveReader interface {

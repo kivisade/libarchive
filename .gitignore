@@ -1,2 +1,5 @@
-// vim swap files
+# PhpStorm and other JetBrains IDEs
+/.idea/
+
+# vim swap files
 **/*.swp

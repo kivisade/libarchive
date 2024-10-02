@@ -3,16 +3,18 @@
 Golang bindings for the [libarchive](http://libarchive.org) library.
 
 ## Simple Extraction Example
+
 ```golang
 package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"os"
 
-	ar "github.com/jonathongardner/libarchive"
+	ar "github.com/kivisade/libarchive"
 )
 
 func printContents(filename string) {
@@ -32,7 +34,7 @@ func printContents(filename string) {
 		if err == io.EOF {
 			break
 		}
-		if errors.Is(err, ErrArchiveWarn) {
+		if errors.Is(err, ar.ErrArchiveWarn) {
 			// do something with the warning
 			fmt.Println(err)
 			continue
@@ -62,9 +64,8 @@ func main() {
 }
 ```
 
-
 ## Acknowledgments
-based on [mstoykov's go libarchive](https://github.com/mstoykov/go-libarchive)
-which is based on
-based on [robxu9's go-libarchive](https://github.com/robxu9/go-libarchive)
 
+- Based on [jonathongardner's `libarchive`](https://github.com/jonathongardner/libarchive)
+  - ⮬ [mstoykov's `go-libarchive`](https://github.com/mstoykov/go-libarchive)
+    - ⮬ [robxu9's `go-libarchive`](https://github.com/robxu9/go-libarchive)
