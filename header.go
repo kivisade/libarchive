@@ -59,7 +59,7 @@ func (e *entryInfo) Size() int64 {
 }
 func (e *entryInfo) Mode() os.FileMode {
 	mode := os.FileMode(e.stat.st_mode & 0777)
-	switch e.stat.st_mode & syscall.S_IFMT {
+	switch uint(e.stat.st_mode) & uint(syscall.S_IFMT) {
 	case syscall.S_IFLNK:
 		mode |= os.ModeSymlink
 	case syscall.S_IFSOCK:
