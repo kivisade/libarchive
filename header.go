@@ -30,16 +30,18 @@ type entryImpl struct {
 
 type entryInfo struct {
 	stat  *C.struct_stat
-	mtime time.Time
 	name  string
+	size  int64
+	mtime time.Time
 }
 
 func (h *entryImpl) Stat() os.FileInfo {
-	info := &entryInfo{}
-	info.stat = C.archive_entry_stat(h.entry)
-	info.mtime = time.Unix(int64(C.archive_entry_mtime(h.entry)), int64(C.archive_entry_mtime_nsec(h.entry)))
-	info.name = filepath.Base(h.PathName())
-	return info
+	return &entryInfo{
+		stat:  C.archive_entry_stat(h.entry),
+		name:  filepath.Base(h.PathName()),
+		size:  int64(C.archive_entry_size(h.entry)),
+		mtime: time.Unix(int64(C.archive_entry_mtime(h.entry)), int64(C.archive_entry_mtime_nsec(h.entry))),
+	}
 }
 
 func (h *entryImpl) PathName() string {
@@ -57,9 +59,11 @@ func (h *entryImpl) Symlink() string {
 func (e *entryInfo) Name() string {
 	return e.name
 }
+
 func (e *entryInfo) Size() int64 {
-	return int64(e.stat.st_size)
+	return e.size
 }
+
 func (e *entryInfo) Mode() os.FileMode {
 	mode := os.FileMode(e.stat.st_mode & 0777)
 	switch uint(e.stat.st_mode) & uint(syscall.S_IFMT) {
@@ -78,9 +82,11 @@ func (e *entryInfo) Mode() os.FileMode {
 	}
 	return mode
 }
+
 func (e *entryInfo) IsDir() bool {
 	return e.stat.st_mode&syscall.S_IFDIR != 0
 }
+
 func (e *entryInfo) Sys() interface{} {
 	return e.stat
 }
